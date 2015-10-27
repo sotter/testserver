@@ -23,7 +23,7 @@ LDFLAGS =
 ##LDFLAGS = 
 
 # Define the -l library name(s)
-LIBS = -lpthread -lcrypto -lssl
+LIBS = -lpthread 
 
 LIB_FLAGS = $(CXXFLAGS) $(LDFLAGS) $(LIBS) -shared -Wl,-soname,$(DYNAMIC_LIB)
 

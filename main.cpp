@@ -44,10 +44,9 @@ int main(int argc, char *argv[])
 
 	tcpserver.dispath();
 
-	sleep(100);
-//	while(1) {
-//		sleep(500);
-//	}
+	while(1) {
+		sleep(500);
+	}
 
 	return 0;
 }

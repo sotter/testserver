@@ -25,7 +25,7 @@ class PduServer : public TcpServer
 public:
 	virtual void on_read(int fd, const char *data, int len)
 	{
-		printf("on read fd:%d len:%d", fd, len);
+		printf("on read fd:%d len:%d\n", fd, len);
 		this->write(fd, "ACK\n", 4);
 		return;
 	}
@@ -44,9 +44,10 @@ int main(int argc, char *argv[])
 
 	tcpserver.dispath();
 
-	while(1) {
-		sleep(500);
-	}
+	sleep(100);
+//	while(1) {
+//		sleep(500);
+//	}
 
 	return 0;
 }

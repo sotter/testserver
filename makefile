@@ -1,5 +1,5 @@
 # Define source files
-CPP_SRCS = tcpserver.cpp main.cpp
+CPP_SRCS = sockevent.cpp tcpserver.cpp main.cpp
 
 ###CPP_SRCS = 
 

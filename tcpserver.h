@@ -74,6 +74,18 @@ public:
 		_online_users.clear();
 	}
 
+	TcpConn *get_user(int fd)
+	{
+		TcpConn *conn = NULL;
+		map<int, TcpConn*>::iterator iter = _online_users.find(fd);
+		if(iter != _online_users.end())
+		{
+			conn = iter->second;
+		}
+
+		return conn;
+	}
+
 	void add_user(int fd, TcpConn *conn)
 	{
 		//不做insert检查

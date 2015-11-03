@@ -319,7 +319,13 @@ void TcpServer::sock_close(int fd)
 //SIMPLE TCP SERVER 没有分包机制
 void TcpServer::on_read(int fd, const char *data, int len)
 {
+	TcpConn *conn  = _online_user.get_user(fd);
+	if(conn != NULL) {
+		conn->set_active_time(time(NULL));
+	}
+
 	LOGI("on read from fd:%d %s len:%d %*.s", fd, getpeeraddr(fd).c_str(), len, len, data);
+
 }
 
 void TcpServer::on_close(int fd)

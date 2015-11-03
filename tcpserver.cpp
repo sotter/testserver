@@ -223,7 +223,7 @@ bool TcpServer::listen()
 		return false;
 	}
 
-	if (::listen(_server_fd, 10) < 0) {
+	if (::listen(_server_fd, 128) < 0) {
 		LOGI("tcp server listen error : %s", strerror(errno));
 		return false;
 	}

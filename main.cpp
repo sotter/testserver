@@ -29,8 +29,6 @@ public:
 		if(conn != NULL) {
 			conn->set_active_time(time(NULL));
 		}
-		printf("receive len:%d data:%s \n", len ,data);
-
 		_watch.on_request(len);
 		_watch.on_ack(4);
 		this->write(fd, "ACK\n", 4);

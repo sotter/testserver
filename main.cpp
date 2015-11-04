@@ -25,8 +25,16 @@ class PduServer : public TcpServer
 public:
 	virtual void on_read(int fd, const char *data, int len)
 	{
-		printf("on read fd:%d len:%d\n", fd, len);
+		TcpConn *conn  = _online_user.get_user(fd);
+		if(conn != NULL) {
+			conn->set_active_time(time(NULL));
+		}
+		printf("receive len:%d data:%s \n", len ,data);
+
+		_watch.on_request(len);
+		_watch.on_ack(4);
 		this->write(fd, "ACK\n", 4);
+
 		return;
 	}
 };

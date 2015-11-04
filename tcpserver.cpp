@@ -191,6 +191,7 @@ void TcpServer::event_loop()
 		}
 
 		check_timeout();
+		_watch.run_stat(time(NULL));
 	}
 }
 
@@ -281,11 +282,16 @@ void TcpServer::on_read_event(int fd)
 		int len = sizeof(client_addr);
 		int fd = ::accept(_server_fd, (struct sockaddr*) &client_addr, (socklen_t*) &len);
 		if (fd > 0) {
+
 			int recv_send_timeout = 1000; //读写超时时间为1s;
 			//设置发送超时
-			setsockopt(fd,SOL_SOCKET,SO_SNDTIMEO,(char *)&recv_send_timeout,sizeof(int));
+			setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, (char *) &recv_send_timeout, sizeof(int));
 			//设置接收超时
-			setsockopt(fd,SOL_SOCKET,SO_RCVTIMEO, (char *)&recv_send_timeout,sizeof(int));
+			setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, (char *) &recv_send_timeout, sizeof(int));
+
+			int buffer = 1 * 1024;
+			setsockopt(fd, SOL_SOCKET, SO_SNDBUF, &buffer, sizeof(buffer));
+			setsockopt(fd, SOL_SOCKET, SO_RCVBUF, &buffer, sizeof(buffer));
 
 			_sock_event->add_event(fd, true, false);
 			on_conn(fd);
@@ -304,6 +310,7 @@ void TcpServer::on_write_event(int fd)
 
 void TcpServer::on_conn(int fd)
 {
+	_watch.on_connect();
 	TcpConn *conn = new TcpConn(fd);
 	LOGI("new connection:%s", conn->info().c_str());
 	_online_user.add_user(fd, conn);
@@ -312,6 +319,7 @@ void TcpServer::on_conn(int fd)
 
 void TcpServer::sock_close(int fd)
 {
+	_watch.on_close();
 	_sock_event->remove_event(fd);
 	::close(fd);
 }
@@ -344,7 +352,7 @@ int TcpServer::read(int fd)
 
 	bool broken = false;
 	if (recv_bytes > 0) {
-		on_read(fd, buffer, offset);
+		on_read(fd, buffer, recv_bytes);
 	} else if(recv_bytes < 0) { //读到错误
 		broken = true;
 		sock_close(fd);

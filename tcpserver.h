@@ -23,6 +23,8 @@
 #include <arpa/inet.h>
 #include <map>
 #include "sockevent.h"
+#include "watch.h"
+
 
 using namespace std;
 
@@ -159,12 +161,13 @@ private:
 
 	void check_timeout();
 
-private:
+protected:
 	bool                _stop;
 	int                 _server_fd;
 	struct sockaddr_in  _address;
 	OnlineUser          _online_user;
 	SockEvent          *_sock_event;
+	Watch               _watch;
 };
 
 

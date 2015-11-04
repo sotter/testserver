@@ -11,7 +11,7 @@ STATIC_LIB =
 
 INSTALL_LIB_PATH = 
 
-CXXFLAGS  = -Wall -g -fPIC -ggdb3 -Wno-deprecated -D__DEBUG
+CXXFLAGS  = -Wall -g -fPIC -ggdb3 -Wno-deprecated 
 
 # Define header file paths
 INCPATH = -I../

@@ -7,6 +7,7 @@ Description :
 
 
 #include "log.h"
+#include <stdarg.h>
 
 LOG* LOG::_instance = NULL;
 

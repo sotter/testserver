@@ -22,6 +22,8 @@ public:
 	{
 		_connected_num = 0;
 		_request_num = 0;
+		_read_num = 0;
+		_write_num = 0;
 		_last_stat_time = time(NULL);
 	}
 

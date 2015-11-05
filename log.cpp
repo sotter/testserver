@@ -26,7 +26,7 @@ void LOG::log(int log_level, const char *format, ...)
 
 	int len  = 0;
 	int offset = snprintf(buffer, sizeof(buffer) - 1,
-			"%d-%02d-%02d-%02d:%02d ", p_tm->tm_year + 1900, p_tm->tm_mon + 1,
+			"%d-%02d-%02d-%02d:%02d:%02d\t", p_tm->tm_year + 1900, p_tm->tm_mon + 1,
 			p_tm->tm_mday, p_tm->tm_hour, p_tm->tm_min, p_tm->tm_sec);
 
 	len += offset;
@@ -39,6 +39,6 @@ void LOG::log(int log_level, const char *format, ...)
 		::write(_run_fd, buffer, len);
 	}
 
-	fprintf(stdout, "%s\n", buffer);
+	fprintf(stdout, "%s", buffer);
 	fflush(stdout);
 }

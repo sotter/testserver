@@ -6,6 +6,7 @@ Description :
 ******************************************************************************/
 #include "tcpserver.h"
 #include <stdlib.h>
+#include <errno.h>
 #include "stdio.h"
 
 using namespace cppnetwork;
@@ -37,8 +38,45 @@ public:
 	}
 };
 
+void StayBack()
+{
+    int     child_pid;
+
+    child_pid = fork();
+
+    if (child_pid == -1)
+    {
+        perror("fork fail");
+        exit(1);
+    }
+    else if (child_pid > 0)
+    {
+        exit(0); // parent exit
+    }
+
+    if (setpgid(0, 0) == -1)
+    {
+        perror("setpgrp");
+        exit(1);
+    }
+
+    if ((child_pid = fork()) == -1)
+    {
+        perror("fork fail");
+        exit(1);
+    }
+    else if (child_pid > 0)
+    {
+        exit(0); // parent exit
+    }
+}
+
 int main(int argc, char *argv[])
 {
+	StayBack();
+
+	LOG::Instance()->set_log_file("tcpserver.log");
+
 	PduServer tcpserver;
 	unsigned short port = 9000;
 

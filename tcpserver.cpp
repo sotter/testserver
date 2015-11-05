@@ -211,7 +211,7 @@ bool TcpServer::listen()
 	_server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
 	if (_server_fd < 0) {
-		LOGI("listen socket error:%s ", strerror(errno));
+		LOG_RUNNING("listen socket error:%s ", strerror(errno));
 		return false;
 	}
 
@@ -219,17 +219,16 @@ bool TcpServer::listen()
 
 	setsockopt(_server_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int)); // optional, but recommended
 	if (::bind(_server_fd, (struct sockaddr *) &_address, sizeof(_address)) < 0) {
-		LOGI("tcp server bind error :%s ", strerror(errno));
-		fflush(stdout);
+		LOG_RUNNING("tcp server bind error :%s ", strerror(errno));
 		return false;
 	}
 
 	if (::listen(_server_fd, 128) < 0) {
-		LOGI("tcp server listen error : %s", strerror(errno));
+		LOG_RUNNING("tcp server listen error : %s", strerror(errno));
 		return false;
 	}
 
-	LOGI("tcp server listen %s ", getsockaddr(_server_fd).c_str());
+	LOG_RUNNING("tcp server listen %s ", getsockaddr(_server_fd).c_str());
 
 	return true;
 }
@@ -296,7 +295,7 @@ void TcpServer::on_read_event(int fd)
 			_sock_event->add_event(fd, true, false);
 			on_conn(fd);
 		} else {
-			LOGI("accept fail :%s ", strerror(errno));
+			LOG_RUNNING("accept fail :%s ", strerror(errno));
 		}
 	} else {
 		read(fd);

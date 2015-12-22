@@ -73,7 +73,7 @@ void StayBack()
 
 int main(int argc, char *argv[])
 {
-	StayBack();
+//	StayBack();
 
 	LOG::Instance()->set_log_file("tcpserver.log");
 

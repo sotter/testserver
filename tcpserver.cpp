@@ -274,6 +274,20 @@ bool TcpServer::set_address(const char *host, unsigned short port)
 	return rc;
 }
 
+static void show_sockaddr_str(const char *name, struct sockaddr_in* client_addr)
+{
+	if(client_addr == NULL) {
+		printf("client_addr is NULL");
+		return ;
+	}
+
+    sockaddr_in sin;
+    memcpy(&sin, client_addr, sizeof(sin));
+
+    printf("name:%s ip:%s port:%d\n", name, inet_ntoa(sin.sin_addr), sin.sin_port);
+    // 取得ip和端口号
+}
+
 void TcpServer::on_read_event(int fd)
 {
 	if (fd == _server_fd) {
@@ -294,6 +308,8 @@ void TcpServer::on_read_event(int fd)
 
 			_sock_event->add_event(fd, true, false);
 			on_conn(fd);
+
+			show_sockaddr_str("accept", &client_addr);
 		} else {
 			LOG_RUNNING("accept fail :%s ", strerror(errno));
 		}
